@@ -1,15 +1,30 @@
-import { View, Text, FlatList, Image } from "react-native";
-import React from "react";
+import { View, Text, FlatList, Image, RefreshControl } from "react-native";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import EmptyState from "../../components/EmptyState";
 import VideoCard from "../../components/VideoCard";
 import { images } from "../../constants";
 import SearchInput from "../../components/SearchInput";
+import Trending from "../../components/Trending";
+import useAppwrite from "../../lib/useAppwrite";
+import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
 
 const Home = () => {
+  const { data: posts, refetch } = useAppwrite(getAllPosts);
+  const { data: latestPosts } = useAppwrite(getLatestPosts);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
+
   return (
     <SafeAreaView className="bg-primary">
       <FlatList
+        data={posts}
         keyExtractor={(item) => item.$id}
         renderItem={(item) => (
           <VideoCard
@@ -33,15 +48,21 @@ const Home = () => {
               </View>
 
               <View className="mt-1.5">
-                <Image source={images.logoSmall} resizeMode="contain" className="w-8 h-10" />
+                <Image
+                  source={images.logoSmall}
+                  resizeMode="contain"
+                  className="w-8 h-10"
+                />
               </View>
             </View>
 
             <SearchInput />
 
-            <View className='w-full flex-1 pt-5 pb-8'>
-                <Text className="text-lg font-pregular text-gray-100 mb-3">Latest Videos</Text>
-
+            <View className="w-full flex-1 pt-5 pb-8">
+              <Text className="text-lg font-pregular text-gray-100 mb-3">
+                Latest Videos
+              </Text>
+              <Trending posts={latestPosts ?? []} />
             </View>
           </View>
         )}
@@ -51,6 +72,9 @@ const Home = () => {
             subtitle="No videos created yet"
           />
         )}
+        refreshControl={
+          <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+        }
       />
     </SafeAreaView>
   );

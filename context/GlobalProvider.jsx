@@ -1,5 +1,4 @@
-import { View, Text } from "react-native";
-import React, { createContext, useContext, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { getCurrentUser } from "../lib/appwrite";
 
 const GlobalContext = createContext();

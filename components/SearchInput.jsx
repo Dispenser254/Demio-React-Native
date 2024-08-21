@@ -1,5 +1,5 @@
 import { View, TextInput, TouchableOpacity, Image, Alert } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { router, usePathname } from "expo-router";
 import { icons } from "../constants";
 

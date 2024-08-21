@@ -1,7 +1,10 @@
-import { View, Text, Image, StatusBar } from "react-native";
-import React from "react";
-import { Tabs } from "expo-router";
+import { View, Text, Image } from "react-native";
+import React, { useState } from "react";
+import { Redirect, Tabs } from "expo-router";
 import { icons } from "../../constants";
+import { StatusBar } from "expo-status-bar";
+import Loader from "../../components/Loader";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const TabIcon = ({ icon, color, name, focused }) => {
   return (
@@ -23,6 +26,8 @@ const TabIcon = ({ icon, color, name, focused }) => {
 };
 
 const TabLayout = () => {
+  const { loading, isLogged } = useGlobalContext();
+  if (!loading && !isLogged) return <Redirect href="/sign-in" />;
   return (
     <>
       <Tabs
@@ -43,14 +48,14 @@ const TabLayout = () => {
           options={{
             title: "Home",
             headerShown: false,
-            tabBarIcon: ({ color, focused }) => {
+            tabBarIcon: ({ color, focused }) => (
               <TabIcon
                 icon={icons.home}
                 color={color}
                 name="Home"
                 focused={focused}
-              />;
-            },
+              />
+            ),
           }}
         />
 
@@ -59,14 +64,14 @@ const TabLayout = () => {
           options={{
             title: "Bookmark",
             headerShown: false,
-            tabBarIcon: ({ color, focused }) => {
+            tabBarIcon: ({ color, focused }) => (
               <TabIcon
                 icon={icons.bookmark}
                 color={color}
                 name="Bookmark"
                 focused={focused}
-              />;
-            },
+              />
+            ),
           }}
         />
 
@@ -75,14 +80,14 @@ const TabLayout = () => {
           options={{
             title: "Create",
             headerShown: false,
-            tabBarIcon: ({ color, focused }) => {
+            tabBarIcon: ({ color, focused }) => (
               <TabIcon
                 icon={icons.plus}
                 color={color}
                 name="Create"
                 focused={focused}
-              />;
-            },
+              />
+            ),
           }}
         />
 
@@ -91,18 +96,19 @@ const TabLayout = () => {
           options={{
             title: "Profile",
             headerShown: false,
-            tabBarIcon: ({ color, focused }) => {
+            tabBarIcon: ({ color, focused }) => (
               <TabIcon
                 icon={icons.profile}
                 color={color}
                 name="Profile"
                 focused={focused}
-              />;
-            },
+              />
+            ),
           }}
         />
       </Tabs>
 
+      <Loader isLoading={loading} />
       <StatusBar backgroundColor="#161622" style="light" />
     </>
   );
