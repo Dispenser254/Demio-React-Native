@@ -8,8 +8,10 @@ import SearchInput from "../../components/SearchInput";
 import Trending from "../../components/Trending";
 import useAppwrite from "../../lib/useAppwrite";
 import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const Home = () => {
+  const { user } = useGlobalContext();
   const { data: posts, refetch } = useAppwrite(getAllPosts);
   const { data: latestPosts } = useAppwrite(getLatestPosts);
 
@@ -26,7 +28,7 @@ const Home = () => {
       <FlatList
         data={posts}
         keyExtractor={(item) => item.$id}
-        renderItem={(item) => (
+        renderItem={({ item }) => (
           <VideoCard
             title={item.title}
             thumbnail={item.thumbnail}
@@ -43,7 +45,7 @@ const Home = () => {
                   Welcome back
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  JSMastery
+                  {user?.username || "Guest"}
                 </Text>
               </View>
 

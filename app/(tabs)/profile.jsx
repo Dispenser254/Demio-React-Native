@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
+import { View, FlatList, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import useAppwrite from "../../lib/useAppwrite";
@@ -7,7 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import VideoCard from "../../components/VideoCard";
 import EmptyState from "../../components/EmptyState";
 import { icons } from "../../constants";
-import { getUserPosts } from "../../lib/appwrite";
+import { getUserPosts, signOut } from "../../lib/appwrite";
 import InfoBox from "../../components/InfoBox";
 
 const Profile = () => {
@@ -31,8 +31,8 @@ const Profile = () => {
             title={item.title}
             thumbnail={item.thumbnail}
             video={item.video}
-            creator={item.creator}
-            avatar={item.avatar}
+            creator={item.creator.username}
+            avatar={item.creator.avatar}
           />
         )}
         ListEmptyComponent={() => (
