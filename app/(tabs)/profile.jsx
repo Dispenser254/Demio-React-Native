@@ -68,7 +68,7 @@ const Profile = () => {
               titleStyles="text-lg"
             />
 
-            <View className="mt-5 flex flow-row">
+            <View className="mt-5 flex flex-row gap-x-4">
               <InfoBox
                 title={posts.length || 0}
                 containerStyles="mr-10"
